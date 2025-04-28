@@ -10,6 +10,8 @@ import { MembreEntity } from './membres/entities/membre.entity';
 // import { join } from 'path';
 import { LivresModule } from './livres/livres.module';
 import { LivreEntity } from './livres/entities/livre.entity';
+import { EmpruntModule } from './emprunt/emprunt.module';
+import { EmpruntEntity } from './emprunt/entities/emprunt.entity';
 
 @Module({
   imports: [
@@ -25,7 +27,7 @@ import { LivreEntity } from './livres/entities/livre.entity';
       username: 'root',
       password: '',
       database: 'bibliotheque',
-      entities: [UserEntity,MembreEntity,LivreEntity],
+      entities: [UserEntity,MembreEntity,LivreEntity,EmpruntEntity],
       // autoLoadEntities: true,
       synchronize: false,
       // migrationsRun : true 
@@ -33,6 +35,7 @@ import { LivreEntity } from './livres/entities/livre.entity';
     UsersModule,
     MembresModule,
     LivresModule,
+    EmpruntModule,
     
   ],
   controllers: [AppController],

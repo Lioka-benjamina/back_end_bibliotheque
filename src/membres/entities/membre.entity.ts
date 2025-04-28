@@ -1,4 +1,5 @@
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { EmpruntEntity } from "src/emprunt/entities/emprunt.entity";
+import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity('membres')
 export class MembreEntity {
@@ -10,6 +11,12 @@ export class MembreEntity {
 
     @Column()
     prenom : string
+
+    @OneToMany(()=>EmpruntEntity , emprunt => emprunt.membre , {
+        cascade : true,
+        orphanedRowAction : "delete"
+    })
+    emprunts : EmpruntEntity[]
 
     @Column()
     numero_mobile : number
