@@ -1,8 +1,8 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors, Put } from '@nestjs/common';
 import { EmpruntService } from './emprunt.service';
 import { CreateEmpruntDto } from './dto/create-emprunt.dto';
 import { UpdateEmpruntDto } from './dto/update-emprunt.dto';
-import { ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiConsumes, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { NoFilesInterceptor } from '@nestjs/platform-express';
 
 @ApiTags("emprunt")
@@ -46,5 +46,19 @@ export class EmpruntController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.empruntService.remove(+id);
+  }
+
+  // Nouvel endpoint pour le retour d'un livre
+  @Put(':id/retourner')
+  @ApiOperation({ summary: 'Marquer un livre comme retourné' })
+  retournerLivre(@Param('id') id: string) {
+    return this.empruntService.retournerLivre(+id);
+  }
+
+  // Nouvel endpoint pour prolonger un emprunt
+  @Put(':id/prolonger')
+  @ApiOperation({ summary: 'Prolonger la durée d\'un emprunt' })
+  prolongerEmprunt(@Param('id') id: string) {
+    return this.empruntService.prolongerEmprunt(+id);
   }
 }

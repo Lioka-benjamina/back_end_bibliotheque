@@ -28,4 +28,8 @@ export class EmpruntEntity {
 
     @Column()
     date_retour : Date
+
+    // Nouvelle colonne pour enregistrer la date réelle du retour
+    @Column({ type: 'date', nullable: true })
+    date_retour_effectif: Date;
 }

@@ -90,4 +90,51 @@ export class EmpruntService {
     await this.empruntRepo.delete(id)
     return "emprun supprimé"
   }
+
+  async retournerLivre(id: number) {
+    const emprunt = await this.findOne(id);
+    
+    if (!emprunt) {
+      throw new NotFoundException(`Emprunt avec l'ID ${id} non trouvé`);
+    }
+    
+    // Supprimer l'enregistrement au lieu de mettre à jour la date de retour
+    await this.empruntRepo.delete(id);
+    
+    return {
+      message: "Livre retourné avec succès",
+      id: id // Retourner l'ID pour confirmation
+    };
+  }
+
+  // Nouvelle méthode pour prolonger un emprunt
+  async prolongerEmprunt(id: number) {
+    const emprunt = await this.findOne(id);
+    
+    if (!emprunt) {
+      throw new NotFoundException(`Emprunt avec l'ID ${id} non trouvé`);
+    }
+    
+    // Vérifier si l'emprunt est déjà terminé
+    if (emprunt.date_retour_effectif) {
+      throw new BadRequestException(`Cet emprunt est déjà terminé`);
+    }
+    
+    // Calculer la nouvelle date de retour (ajouter 14 jours à la date actuelle)
+    const nouvelleDate = new Date(emprunt.date_retour);
+    nouvelleDate.setDate(nouvelleDate.getDate() + 14);
+    
+    // Mettre à jour la date de retour
+    await this.empruntRepo.update(id, {
+      date_retour: nouvelleDate
+    });
+    
+    // Récupérer l'emprunt mis à jour
+    const empruntMisAJour = await this.findOne(id);
+    
+    return {
+      message: "Emprunt prolongé avec succès",
+      emprunt: empruntMisAJour
+    };
+  }
 }
